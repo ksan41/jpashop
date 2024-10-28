@@ -3,6 +3,7 @@ package jpabook.jpashop.api;
 import jpabook.jpashop.domain.Address;
 import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.domain.OrderStatus;
+import jpabook.jpashop.repository.OrderRepository;
 import jpabook.jpashop.repository.OrderSearch;
 import jpabook.jpashop.service.OrderService;
 import lombok.Data;
@@ -20,10 +21,21 @@ import java.util.stream.Collectors;
 public class OrderSimpleApiController {
 
     private final OrderService orderService;
+    private final OrderRepository orderRepository;
 
     @GetMapping("api/v2/orders")
     public List<SimpleOrderDto> getOrdersV2() {
         List<Order> findOrders = orderService.findOrders(new OrderSearch());
+        List<SimpleOrderDto> orders = findOrders.stream()
+                .map(o -> new SimpleOrderDto(o))
+                .collect(Collectors.toList());
+        return orders;
+    }
+
+    // fetch join 적용
+    @GetMapping("api/v3/orders")
+    public List<SimpleOrderDto> getOrdersV3() {
+        List<Order> findOrders = orderRepository.findAllWithMemberAndDelivery();
         List<SimpleOrderDto> orders = findOrders.stream()
                 .map(o -> new SimpleOrderDto(o))
                 .collect(Collectors.toList());
