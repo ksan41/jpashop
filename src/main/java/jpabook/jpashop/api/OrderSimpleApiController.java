@@ -26,7 +26,7 @@ public class OrderSimpleApiController {
     private final OrderRepository orderRepository;
     private final OrderSimpleQueryRepository orderSimpleQueryRepository;
 
-    @GetMapping("api/v2/orders")
+    @GetMapping("api/v2/simple-orders")
     public List<SimpleOrderDto> getOrdersV2() {
         List<Order> findOrders = orderService.findOrders(new OrderSearch());
         List<SimpleOrderDto> orders = findOrders.stream()
@@ -36,7 +36,7 @@ public class OrderSimpleApiController {
     }
 
     // fetch join 적용
-    @GetMapping("api/v3/orders")
+    @GetMapping("api/v3/simple-orders")
     public List<SimpleOrderDto> getOrdersV3() {
         List<Order> findOrders = orderRepository.findAllWithMemberAndDelivery();
         List<SimpleOrderDto> orders = findOrders.stream()
@@ -45,7 +45,7 @@ public class OrderSimpleApiController {
         return orders;
     }
 
-    @GetMapping("api/v4/orders")
+    @GetMapping("api/v4/simple-orders")
     public List<OrderSimpleQueryDto> getOrdersV4() {
         return orderSimpleQueryRepository.findOrderDtos();
     }
